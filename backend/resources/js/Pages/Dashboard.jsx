@@ -1,26 +1,33 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
+import AdminLayout from "@/Layouts/AdminLayout";
 
 export default function Dashboard() {
     return (
-        <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-                    Dashboard
-                </h2>
-            }
-        >
-            <Head title="Dashboard" />
+        <AdminLayout>
+            <h1 className="text-3xl font-bold mb-6">
+                Dashboard
+            </h1>
 
-            <div className="py-12">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
-                        <div className="p-6 text-gray-900 dark:text-gray-100">
-                            You're logged in!
-                        </div>
-                    </div>
+            <div className="grid grid-cols-4 gap-6">
+                <div className="bg-white rounded-xl shadow p-6">
+                    <h2 className="text-gray-500">Total Produk</h2>
+                    <p className="text-3xl font-bold mt-2">0</p>
+                </div>
+
+                <div className="bg-white rounded-xl shadow p-6">
+                    <h2 className="text-gray-500">Kategori</h2>
+                    <p className="text-3xl font-bold mt-2">0</p>
+                </div>
+
+                <div className="bg-white rounded-xl shadow p-6">
+                    <h2 className="text-gray-500">Supplier</h2>
+                    <p className="text-3xl font-bold mt-2">0</p>
+                </div>
+
+                <div className="bg-white rounded-xl shadow p-6">
+                    <h2 className="text-gray-500">Transaksi Hari Ini</h2>
+                    <p className="text-3xl font-bold mt-2">0</p>
                 </div>
             </div>
-        </AuthenticatedLayout>
+        </AdminLayout>
     );
 }
