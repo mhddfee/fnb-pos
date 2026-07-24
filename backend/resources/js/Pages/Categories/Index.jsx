@@ -23,7 +23,9 @@ export default function Index({ categories }) {
                         <tr>
                             <th className="p-3 text-left">No</th>
                             <th className="p-3 text-left">Nama</th>
+                            <th className="p-3 text-left">Deskripsi</th>
                             <th className="p-3 text-left">Status</th>
+                            <th className="p-3 text-center">Aksi</th>
                         </tr>
                     </thead>
 
@@ -33,7 +35,21 @@ export default function Index({ categories }) {
                                 <td className="p-3">{index + 1}</td>
                                 <td className="p-3">{category.name}</td>
                                 <td className="p-3">
+                                    {category.description}
+                                </td>
+
+                                <td className="p-3">
                                     {category.is_active ? "Aktif" : "Nonaktif"}
+                                </td>
+
+                                <td className="p-3 text-center">
+                                    <button className="bg-yellow-500 text-white px-3 py-1 rounded mr-2">
+                                        Edit
+                                    </button>
+
+                                    <button className="bg-red-600 text-white px-3 py-1 rounded">
+                                        Hapus
+                                    </button>
                                 </td>
                             </tr>
                         ))}
