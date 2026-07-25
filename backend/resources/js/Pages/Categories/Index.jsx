@@ -1,12 +1,19 @@
 import AdminLayout from "@/Layouts/AdminLayout";
-import { Link } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 
 export default function Index({ categories }) {
+
+    function handleDelete(id) {
+        if (confirm("Yakin ingin menghapus kategori ini?")) {
+            router.delete(`/categories/${id}`);
+        }
+    }
+    
     return (
         <AdminLayout>
             <div className="flex justify-between items-center mb-6">
-                <h1 className="text-3xl font-bold text-red-600">
-                    TEST CATEGORY
+                <h1 className="text-3xl font-bold">
+                    Daftar Kategori
                 </h1>
 
                 <Link
@@ -54,13 +61,19 @@ export default function Index({ categories }) {
                                     </span>
                                 </td>
 
-                                <td className="px-5 py-4">
-                                    <div className="flex justify-center gap-2">
-                                        <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded">
+                                <td className="px-5 py-4 text-center">
+                                    <div className="flex justify-center items-center gap-2">
+                                        <Link
+                                            href={`/categories/${category.id}/edit`}
+                                            className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-sm font-medium"
+                                        >
                                             Edit
-                                        </button>
+                                        </Link>
 
-                                        <button className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded">
+                                        <button
+                                            onClick={() => handleDelete(category.id)}
+                                            className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm font-medium"
+                                        >
                                             Hapus
                                         </button>
                                     </div>

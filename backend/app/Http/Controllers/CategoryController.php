@@ -35,4 +35,35 @@ class CategoryController extends Controller
         return redirect()->route('categories.index')
             ->with('success', 'Kategori berhasil ditambahkan.');
     }
+
+    public function edit(Category $category)
+    {
+        return Inertia::render('Categories/Edit', [
+            'category' => $category,
+        ]);
+    }
+
+    public function update(Request $request, Category $category)
+    {
+        $validated = $request->validate([
+            'name' => 'required|max:255',
+            'description' => 'nullable',
+            'is_active' => 'boolean',
+        ]);
+
+        $category->update($validated);
+
+        return redirect()
+        ->route('categories.index')
+        ->with('success', 'Kategori berhasil diperbarui.');
+    }
+
+    public function destroy(Category $category)
+    {
+        $category->delete();
+
+        return redirect()
+            ->route('categories.index')
+            ->with('success', 'Kategori berhasil dihapus.');
+    }
 }
