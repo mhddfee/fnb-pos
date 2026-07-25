@@ -8,6 +8,7 @@ export default function Create({ categories }) {
         name: "",
         description: "",
         price: "",
+        image: null,
         is_active: true,
     });
 
@@ -104,6 +105,24 @@ export default function Create({ categories }) {
                         className="w-full border rounded-lg px-3 py-2"
                         rows="4"
                     />
+                </div>
+                <div>
+                    <label className="block mb-2 font-medium">
+                        Gambar Produk
+                    </label>
+
+                    <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => setData("image", e.target.files[0])}
+                        className="w-full border rounded-lg px-3 py-2"
+                    />
+
+                    {errors.image && (
+                        <p className="text-red-500 text-sm mt-1">
+                            {errors.image}
+                        </p>
+                    )}
                 </div>
                 <div className="flex items-center gap-2">
                     <input

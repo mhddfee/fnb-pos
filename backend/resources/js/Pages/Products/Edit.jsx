@@ -3,18 +3,22 @@ import { useForm } from "@inertiajs/react";
 
 export default function Edit({ product, categories }) {
 
-    const { data, setData, put, processing, errors } = useForm({
+    const { data, setData, post, processing, errors } = useForm({
+        _method: "put",
         category_id: product.category_id,
         name: product.name,
         description: product.description || "",
         price: product.price,
+        image: null,
         is_active: product.is_active,
     });
 
     function submit(e) {
         e.preventDefault();
 
-        put(`/products/${product.id}`);
+        post(`/products/${product.id}`, {
+            forceFormData: true,
+        });
     }
 
     return (
@@ -104,6 +108,38 @@ export default function Edit({ product, categories }) {
                         className="w-full border rounded-lg px-3 py-2"
                         rows="4"
                     />
+                </div>
+                <div>
+                    <label className="block mb-2 font-medium">
+                        Gambar Produk
+                    </label>
+
+                    {product.image && (
+                        <div className="mb-3">
+                            <img
+                                src={`/storage/${product.image}`}
+                                alt={product.name}
+                                className="w-24 h-24 object-cover rounded-lg border"
+                            />
+                        </div>
+                    )}
+
+                    <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => setData("image", e.target.files[0])}
+                        className="w-full border rounded-lg px-3 py-2"
+                    />
+
+                    <p className="text-sm text-gray-500 mt-1">
+                        Kosongkan jika tidak ingin mengganti gambar.
+                    </p>
+
+                    {errors.image && (
+                        <p className="text-red-500 text-sm mt-1">
+                            {errors.image}
+                        </p>
+                    )}
                 </div>
                 <div className="flex items-center gap-2">
                     <input

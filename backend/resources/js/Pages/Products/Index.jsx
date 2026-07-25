@@ -62,6 +62,7 @@ export default function Index({ products, filters }) {
                     <thead className="bg-slate-100">
                         <tr>
                             <th className="px-5 py-3 text-left">No</th>
+                            <th className="px-5 py-3 text-center font-semibold">Gambar</th>
                             <th className="px-5 py-3 text-left">Produk</th>
                             <th className="px-5 py-3 text-left">Kategori</th>
                             <th className="px-5 py-3 text-left">Harga</th>
@@ -78,6 +79,18 @@ export default function Index({ products, filters }) {
                             >
                                 <td className="px-5 py-4">
                                     {index + 1}
+                                </td>
+
+                                <td className="px-5 py-4 text-center">
+                                    {product.image ? (
+                                        <img
+                                            src={`/storage/${product.image}`}
+                                            alt={product.name}
+                                            className="w-16 h-16 object-cover rounded-lg border mx-auto"
+                                        />
+                                    ) : (
+                                        <span className="text-gray-400">-</span>
+                                    )}
                                 </td>
 
                                 <td className="px-5 py-4 font-medium">

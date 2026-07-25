@@ -1,4 +1,8 @@
+import { Link, usePage } from "@inertiajs/react";
+
 export default function AdminLayout({ children }) {
+    const { url } = usePage();
+
     return (
         <div className="min-h-screen flex bg-gray-100">
             {/* Sidebar */}
@@ -8,29 +12,71 @@ export default function AdminLayout({ children }) {
                 </h1>
 
                 <nav className="space-y-3">
-                    <a href="#" className="block hover:text-blue-400">
+                    <Link
+                        href="/dashboard"
+                        className={`block px-3 py-2 rounded-lg ${
+                            url.startsWith("/dashboard")
+                                ? "bg-blue-600 text-white"
+                                : "hover:bg-slate-800"
+                        }`}
+                    >
                         Dashboard
-                    </a>
+                    </Link>
 
-                    <a href="#" className="block hover:text-blue-400">
+                    <Link
+                        href="/categories"
+                        className={`block px-3 py-2 rounded-lg ${
+                            url.startsWith("/categories")
+                                ? "bg-blue-600 text-white"
+                                : "hover:bg-slate-800"
+                        }`}
+                    >
                         Kategori
-                    </a>
+                    </Link>
 
-                    <a href="#" className="block hover:text-blue-400">
+                    <Link
+                        href="/products"
+                        className={`block px-3 py-2 rounded-lg ${
+                            url.startsWith("/products")
+                                ? "bg-blue-600 text-white"
+                                : "hover:bg-slate-800"
+                        }`}
+                    >
                         Produk
-                    </a>
+                    </Link>
 
-                    <a href="#" className="block hover:text-blue-400">
+                    <Link
+                        href="/suppliers"
+                        className={`block px-3 py-2 rounded-lg ${
+                            url.startsWith("/suppliers")
+                                ? "bg-blue-600 text-white"
+                                : "hover:bg-slate-800"
+                        }`}
+                    >
                         Supplier
-                    </a>
+                    </Link>
 
-                    <a href="#" className="block hover:text-blue-400">
+                    <Link
+                        href="/#"
+                        className={`block px-3 py-2 rounded-lg ${
+                            url.startsWith("/#")
+                                ? "bg-blue-600 text-white"
+                                : "hover:bg-slate-800"
+                        }`}
+                    >
                         Kasir
-                    </a>
+                    </Link>
 
-                    <a href="#" className="block hover:text-blue-400">
+                    <Link
+                        href="/#"
+                        className={`block px-3 py-2 rounded-lg ${
+                            url.startsWith("/#")
+                                ? "bg-blue-600 text-white"
+                                : "hover:bg-slate-800"
+                        }`}
+                    >
                         Laporan
-                    </a>
+                    </Link>
                 </nav>
             </aside>
 
