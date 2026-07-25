@@ -1,14 +1,27 @@
 import AdminLayout from "@/Layouts/AdminLayout";
-import { Link, router } from "@inertiajs/react";
+import { Link, router, useForm } from "@inertiajs/react";
 
-export default function Index({ categories }) {
+export default function Index({ categories, filters }) {
+
+    const { data, setData, get } = useForm({
+    search: filters.search || "",
+    });
 
     function handleDelete(id) {
         if (confirm("Yakin ingin menghapus kategori ini?")) {
             router.delete(`/categories/${id}`);
         }
     }
-    
+
+    function handleSearch(e) {
+        e.preventDefault();
+
+        get("/categories", {
+            preserveState: true,
+            preserveScroll: true,
+        });
+    }
+
     return (
         <AdminLayout>
             <div className="flex justify-between items-center mb-6">
@@ -24,6 +37,28 @@ export default function Index({ categories }) {
                 </Link>
             </div>
 
+            <form
+                onSubmit={handleSearch}
+                className="mb-5 flex gap-3"
+            >
+                <input
+                    type="text"
+                    placeholder="Cari kategori..."
+                    value={data.search}
+                    onChange={(e) =>
+                        setData("search", e.target.value)
+                    }
+                    className="border rounded-lg px-3 py-2 w-80"
+                />
+
+                <button
+                    type="submit"
+                    className="bg-slate-800 text-white px-4 rounded-lg"
+                >
+                    Cari
+                </button>
+            </form>
+
             <div className="bg-white rounded-xl shadow overflow-hidden">
                 <table className="w-full border-collapse">
                     <thead className="bg-slate-100">
@@ -37,7 +72,7 @@ export default function Index({ categories }) {
                     </thead>
 
                     <tbody>
-                        {categories.map((category, index) => (
+                        {categories.data.map((category, index) => (
                             <tr key={category.id} className="border-t hover:bg-gray-50">
                                 <td className="px-5 py-4">{index + 1}</td>
 
@@ -82,6 +117,21 @@ export default function Index({ categories }) {
                         ))}
                     </tbody>
                 </table>
+                <div className="flex justify-center gap-2 p-4">
+                    {categories.links.map((link, index) => (
+                        <button
+                            key={index}
+                            disabled={!link.url}
+                            onClick={() => link.url && router.visit(link.url)}
+                            className={`px-3 py-2 rounded border ${
+                                link.active
+                                    ? "bg-blue-600 text-white"
+                                    : "bg-white hover:bg-gray-100"
+                            } ${!link.url ? "opacity-50 cursor-not-allowed" : ""}`}
+                            dangerouslySetInnerHTML={{ __html: link.label }}
+                        />
+                    ))}
+                </div>
             </div>
         </AdminLayout>
     );
