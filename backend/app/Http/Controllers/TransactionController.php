@@ -15,13 +15,12 @@ class TransactionController extends Controller
 
     public function index()
     {
-        $products = Product::where('is_active', true)
-            ->with('category')
-            ->orderBy('name')
-            ->get();
+        $transactions = Transaction::with('user')
+            ->latest()
+            ->paginate(10);
 
-        return Inertia::render('Cashier/Index', [
-            'products' => $products,
+        return Inertia::render('Transactions/Index', [
+            'transactions' => $transactions,
         ]);
     }
 
@@ -30,45 +29,16 @@ class TransactionController extends Controller
         //
     }
     
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'cart' => 'required|array|min:1',
-            'total' => 'required|numeric|min:0',
-            'paid' => 'required|numeric|gte:total',
-        ]);
-
-        DB::transaction(function () use ($validated) {
-
-            $transaction = Transaction::create([
-                'invoice' => 'INV-' . now()->format('YmdHis'),
-                'user_id' => Auth::id(),
-                'total' => $validated['total'],
-                'paid' => $validated['paid'],
-                'change' => $validated['paid'] - $validated['total'],
-            ]);
-
-            foreach ($validated['cart'] as $item) {
-
-                TransactionItem::create([
-                    'transaction_id' => $transaction->id,
-                    'product_id' => $item['id'],
-                    'qty' => $item['qty'],
-                    'price' => $item['price'],
-                    'subtotal' => $item['subtotal'],
-                ]);
-            }
-
-        });
-
-        return redirect()
-            ->route('cashier.index')
-            ->with('success', 'Transaksi berhasil disimpan.');
-    }
-
     public function show(Transaction $transaction)
     {
-        //
+        $transaction->load([
+            'user',
+            'items.product',
+        ]);
+
+        return Inertia::render('Transactions/Show', [
+            'transaction' => $transaction,
+        ]);
     }
 
     /**

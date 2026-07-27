@@ -77,6 +77,17 @@ export default function AdminLayout({ children }) {
                     >
                         Laporan
                     </Link>
+
+                    <Link
+                        href="/transactions"
+                        className={`block px-3 py-2 rounded-lg ${
+                            url.startsWith("/transactions")
+                                ? "bg-blue-600 text-white"
+                                : "hover:bg-slate-800"
+                        }`}
+                    >
+                        Transaksi
+                    </Link>
                 </nav>
             </aside>
 

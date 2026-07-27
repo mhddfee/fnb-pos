@@ -9,6 +9,7 @@ export default function Edit({ product, categories }) {
         name: product.name,
         description: product.description || "",
         price: product.price,
+        stock: product.stock,
         image: null,
         is_active: product.is_active,
     });
@@ -61,6 +62,7 @@ export default function Edit({ product, categories }) {
                         </p>
                     )}
                 </div>
+                
                 <div>
                     <label className="block mb-2 font-medium">
                         Nama Produk
@@ -79,6 +81,7 @@ export default function Edit({ product, categories }) {
                         </p>
                     )}
                 </div>
+
                 <div>
                     <label className="block mb-2 font-medium">
                         Harga
@@ -97,6 +100,26 @@ export default function Edit({ product, categories }) {
                         </p>
                     )}
                 </div>
+
+                <div>
+                    <label className="block mb-2 font-medium">
+                        Stok
+                    </label>
+
+                    <input
+                        type="number"
+                        value={data.stock}
+                        onChange={(e) => setData("stock", e.target.value)}
+                        className="w-full border rounded-lg px-3 py-2"
+                    />
+
+                    {errors.stock && (
+                        <p className="text-red-500 text-sm mt-1">
+                            {errors.stock}
+                        </p>
+                    )}
+                </div>    
+
                 <div>
                     <label className="block mb-2 font-medium">
                         Deskripsi
@@ -109,6 +132,7 @@ export default function Edit({ product, categories }) {
                         rows="4"
                     />
                 </div>
+
                 <div>
                     <label className="block mb-2 font-medium">
                         Gambar Produk
@@ -141,6 +165,7 @@ export default function Edit({ product, categories }) {
                         </p>
                     )}
                 </div>
+
                 <div className="flex items-center gap-2">
                     <input
                         type="checkbox"
@@ -152,6 +177,7 @@ export default function Edit({ product, categories }) {
 
                     <label>Produk Aktif</label>
                 </div>
+
                 <div className="flex justify-end">
                     <button
                         type="submit"

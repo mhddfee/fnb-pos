@@ -8,6 +8,7 @@ export default function Create({ categories }) {
         name: "",
         description: "",
         price: "",
+        stock: "",
         image: null,
         is_active: true,
     });
@@ -94,6 +95,26 @@ export default function Create({ categories }) {
                         </p>
                     )}
                 </div>
+
+                <div>
+                    <label className="block mb-2 font-medium">
+                        Stok
+                    </label>
+
+                    <input
+                        type="number"
+                        value={data.stock}
+                        onChange={(e) => setData("stock", e.target.value)}
+                        className="w-full border rounded-lg px-3 py-2"
+                    />
+
+                    {errors.stock && (
+                        <p className="text-red-500 text-sm mt-1">
+                            {errors.stock}
+                        </p>
+                    )}
+                </div>
+                
                 <div>
                     <label className="block mb-2 font-medium">
                         Deskripsi

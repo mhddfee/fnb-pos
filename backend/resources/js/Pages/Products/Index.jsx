@@ -66,6 +66,7 @@ export default function Index({ products, filters }) {
                             <th className="px-5 py-3 text-left">Produk</th>
                             <th className="px-5 py-3 text-left">Kategori</th>
                             <th className="px-5 py-3 text-left">Harga</th>
+                            <th className="px-5 py-3 text-center font-semibold">Stok</th>
                             <th className="px-5 py-3 text-center">Status</th>
                             <th className="px-5 py-3 text-center">Aksi</th>
                         </tr>
@@ -103,6 +104,18 @@ export default function Index({ products, filters }) {
 
                                 <td className="px-5 py-4">
                                     Rp {Number(product.price).toLocaleString("id-ID")}
+                                </td>
+
+                                <td className="px-5 py-4 text-center">
+                                    <span
+                                        className={`px-3 py-1 rounded-full ${
+                                            product.stock <= 5
+                                                ? "bg-red-100 text-red-700"
+                                                : "bg-green-100 text-green-700"
+                                        }`}
+                                    >
+                                        {product.stock}
+                                    </span>
                                 </td>
 
                                 <td className="px-5 py-4 text-center">
