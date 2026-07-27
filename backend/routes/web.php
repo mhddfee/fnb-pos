@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\TransactionController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -35,6 +36,12 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('suppliers', SupplierController::class)
         ->except(['show']);
+
+    Route::get('/cashier', [TransactionController::class, 'index'])
+        ->name('cashier.index');
+
+    Route::post('/cashier', [TransactionController::class, 'store'])
+        ->name('cashier.store');    
 });
 
 require __DIR__.'/auth.php';

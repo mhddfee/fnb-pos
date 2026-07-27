@@ -57,9 +57,9 @@ export default function AdminLayout({ children }) {
                     </Link>
 
                     <Link
-                        href="/#"
+                        href="/cashier"
                         className={`block px-3 py-2 rounded-lg ${
-                            url.startsWith("/#")
+                            url.startsWith("/cashier")
                                 ? "bg-blue-600 text-white"
                                 : "hover:bg-slate-800"
                         }`}
