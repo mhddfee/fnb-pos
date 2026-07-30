@@ -5,7 +5,7 @@ import AdminLayout from "@/Layouts/AdminLayout";
 export default function Index({ products }) {
     const [cart, setCart] = useState([]);
     const [paid, setPaid] = useState("");
-    const { flash } = usePage().props;
+
     console.log(usePage().props);
 
     function addToCart(product) {
@@ -86,19 +86,7 @@ export default function Index({ products }) {
             <h1 className="text-3xl font-bold mb-6">
                 Kasir
             </h1>
-
-            {flash.success && (
-                <div className="mb-4 rounded-lg bg-green-100 border border-green-300 text-green-700 px-4 py-3">
-                    {flash.success}
-                </div>
-            )}
-
-            {flash.error && (
-                <div className="mb-4 rounded-lg bg-red-100 border border-red-300 text-red-700 px-4 py-3">
-                    {flash.error}
-                </div>
-            )}
-
+            
             <div className="grid grid-cols-4 gap-5">
                 {products.map(product => (
                     <div

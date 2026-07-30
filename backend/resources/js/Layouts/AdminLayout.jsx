@@ -1,7 +1,10 @@
 import { Link, usePage } from "@inertiajs/react";
+import FlashMessage from "@/Components/FlashMessage";
 
 export default function AdminLayout({ children }) {
-    const { url } = usePage();
+    const { url, props } = usePage();
+
+    const user = props.auth.user;
 
     return (
         <div className="min-h-screen flex bg-gray-100">
@@ -24,39 +27,6 @@ export default function AdminLayout({ children }) {
                     </Link>
 
                     <Link
-                        href="/categories"
-                        className={`block px-3 py-2 rounded-lg ${
-                            url.startsWith("/categories")
-                                ? "bg-blue-600 text-white"
-                                : "hover:bg-slate-800"
-                        }`}
-                    >
-                        Kategori
-                    </Link>
-
-                    <Link
-                        href="/products"
-                        className={`block px-3 py-2 rounded-lg ${
-                            url.startsWith("/products")
-                                ? "bg-blue-600 text-white"
-                                : "hover:bg-slate-800"
-                        }`}
-                    >
-                        Produk
-                    </Link>
-
-                    <Link
-                        href="/suppliers"
-                        className={`block px-3 py-2 rounded-lg ${
-                            url.startsWith("/suppliers")
-                                ? "bg-blue-600 text-white"
-                                : "hover:bg-slate-800"
-                        }`}
-                    >
-                        Supplier
-                    </Link>
-
-                    <Link
                         href="/cashier"
                         className={`block px-3 py-2 rounded-lg ${
                             url.startsWith("/cashier")
@@ -65,17 +35,6 @@ export default function AdminLayout({ children }) {
                         }`}
                     >
                         Kasir
-                    </Link>
-
-                    <Link
-                        href="/#"
-                        className={`block px-3 py-2 rounded-lg ${
-                            url.startsWith("/#")
-                                ? "bg-blue-600 text-white"
-                                : "hover:bg-slate-800"
-                        }`}
-                    >
-                        Laporan
                     </Link>
 
                     <Link
@@ -88,11 +47,72 @@ export default function AdminLayout({ children }) {
                     >
                         Transaksi
                     </Link>
+
+                    {user.role === "admin" && (
+                        <>
+                            <Link
+                                href="/categories"
+                                className={`block px-3 py-2 rounded-lg ${
+                                    url.startsWith("/categories")
+                                        ? "bg-blue-600 text-white"
+                                        : "hover:bg-slate-800"
+                                }`}
+                            >
+                                Kategori
+                            </Link>
+
+                            <Link
+                                href="/products"
+                                className={`block px-3 py-2 rounded-lg ${
+                                    url.startsWith("/products")
+                                        ? "bg-blue-600 text-white"
+                                        : "hover:bg-slate-800"
+                                }`}
+                            >
+                                Produk
+                            </Link>
+
+                            <Link
+                                href="/suppliers"
+                                className={`block px-3 py-2 rounded-lg ${
+                                    url.startsWith("/suppliers")
+                                        ? "bg-blue-600 text-white"
+                                        : "hover:bg-slate-800"
+                                }`}
+                            >
+                                Supplier
+                            </Link>
+
+                            <Link
+                                href="/reports"
+                                className={`block px-3 py-2 rounded-lg ${
+                                    url.startsWith("/reports")
+                                        ? "bg-blue-600 text-white"
+                                        : "hover:bg-slate-800"
+                                }`}
+                            >
+                                Laporan
+                            </Link>
+
+                            <Link
+                                href="/users"
+                                className={`block px-3 py-2 rounded-lg ${
+                                    url.startsWith("/users")
+                                        ? "bg-blue-600 text-white"
+                                        : "hover:bg-slate-800"
+                                }`}
+                            >
+                                User
+                            </Link>
+                        </>
+                    )}
                 </nav>
             </aside>
 
             {/* Content */}
             <main className="flex-1 p-8">
+                <FlashMessage />
+
                 {children}
             </main>
         </div>

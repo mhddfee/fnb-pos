@@ -70,10 +70,18 @@ class CategoryController extends Controller
 
     public function destroy(Category $category)
     {
+        if ($category->products()->exists()) {
+            return back()->with(
+                'error',
+                'Kategori tidak dapat dihapus karena masih digunakan oleh satu atau lebih produk.'
+            );
+        }
+
         $category->delete();
 
-        return redirect()
-            ->route('categories.index')
-            ->with('success', 'Kategori berhasil dihapus.');
+        return back()->with(
+            'success',
+            'Kategori berhasil dihapus.'
+        );
     }
 }

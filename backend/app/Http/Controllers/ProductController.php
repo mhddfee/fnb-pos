@@ -74,6 +74,13 @@ class ProductController extends Controller
         ]);
     }
 
+    public function restock(Product $product)
+    {
+        return Inertia::render('Products/Restock', [
+            'product' => $product,
+        ]);
+    }
+
     public function update(Request $request, Product $product)
     {
         $validated = $request->validate([
@@ -105,13 +112,35 @@ class ProductController extends Controller
 
     public function destroy(Product $product)
     {
+        if ($product->transactionItems()->exists()) {
+            return back()->with(
+                'error',
+                'Produk tidak dapat dihapus karena sudah pernah digunakan dalam transaksi. Ubah status menjadi Nonaktif jika produk sudah tidak dijual.'
+            );
+        }
+
         if ($product->image) {
             Storage::disk('public')->delete($product->image);
         }
 
         $product->delete();
 
-        return redirect()->route('products.index')
-            ->with('success', 'Produk berhasil dihapus.');
+        return back()->with(
+            'success',
+            'Produk berhasil dihapus.'
+        );
+    }
+
+    public function updateStock(Request $request, Product $product)
+    {
+        $validated = $request->validate([
+            'stock' => 'required|integer|min:1',
+        ]);
+
+        $product->increment('stock', $validated['stock']);
+
+        return redirect()
+            ->route('products.index')
+            ->with('success', 'Stok berhasil ditambahkan.');
     }
 }

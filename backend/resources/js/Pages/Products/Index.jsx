@@ -1,5 +1,6 @@
 import AdminLayout from "@/Layouts/AdminLayout";
-import { Link, router, useForm } from "@inertiajs/react";
+import { Link, router, useForm, } from "@inertiajs/react";
+import FlashMessage from "@/Components/FlashMessage";
 
 export default function Index({ products, filters }) {
     const { data, setData, get } = useForm({
@@ -55,6 +56,7 @@ export default function Index({ products, filters }) {
                         + Tambah Produk
                     </Link>
                 </div>
+                
             </div>
 
             <div className="bg-white rounded-xl shadow overflow-hidden">
@@ -135,14 +137,21 @@ export default function Index({ products, filters }) {
 
                                         <Link
                                             href={route("products.edit", product.id)}
-                                            className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded"
+                                            className="bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 rounded-lg"
                                         >
                                             Edit
                                         </Link>
 
+                                        <Link
+                                            href={route("products.restock", product.id)}
+                                            className="bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded-lg"
+                                        >
+                                            Restock
+                                        </Link>
+
                                         <button
                                             onClick={() => handleDelete(product.id)}
-                                            className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded"
+                                            className="bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded-lg"
                                         >
                                             Hapus
                                         </button>
