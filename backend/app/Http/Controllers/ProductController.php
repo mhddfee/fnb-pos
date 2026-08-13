@@ -22,11 +22,44 @@ class ProductController extends Controller
             ->paginate(10)
             ->withQueryString();
 
+            $totalProducts = Product::count();
+
+            $activeProducts = Product::where(
+                'is_active',
+                true
+            )->count();
+
+            $inactiveProducts = Product::where(
+                'is_active',
+                false
+            )->count();
+
+            $lowStockProducts = Product::where(
+                'stock',
+                '<=',
+                5
+            )->count();
+
         return Inertia::render('Products/Index', [
+
             'products' => $products,
+
             'filters' => [
                 'search' => $search,
             ],
+
+            'stats' => [
+
+                'total' => $totalProducts,
+
+                'active' => $activeProducts,
+
+                'inactive' => $inactiveProducts,
+
+                'lowStock' => $lowStockProducts,
+
+            ],
+
         ]);
     }
 

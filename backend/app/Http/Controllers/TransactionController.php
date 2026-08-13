@@ -15,12 +15,40 @@ class TransactionController extends Controller
 
     public function index()
     {
-        $transactions = Transaction::with('user')
-            ->latest()
-            ->paginate(10);
+        $transactions = Transaction::with([
+            'user',
+            'items',
+        ])
+        ->latest()
+        ->paginate(10);
+
+        $todayTransactions = Transaction::whereDate(
+            'created_at',
+            today()
+        )->count();
+
+        $totalRevenue = Transaction::sum('total');
+
+        $averageTransaction = Transaction::avg('total');
 
         return Inertia::render('Transactions/Index', [
+
             'transactions' => $transactions,
+
+            'totalTransactions' => Transaction::count(),
+
+            'stats' => [
+
+                'total' => Transaction::count(),
+
+                'today' => $todayTransactions,
+
+                'revenue' => $totalRevenue,
+
+                'average' => round($averageTransaction),
+
+            ],
+
         ]);
     }
 

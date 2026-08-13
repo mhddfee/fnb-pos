@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Category;
 use App\Models\Transaction;
 use App\Models\TransactionItem;
+use App\Enums\PaymentMethod;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -16,12 +18,15 @@ class CashierController extends Controller
     {
         $products = Product::with('category')
             ->where('is_active', true)
-            ->where('stock', '>', 0)
             ->orderBy('name')
             ->get();
 
         return Inertia::render('Cashier/Index', [
-            'products' => $products,
+            'products' => Product::where('is_active', true)
+                ->with('category')
+                ->get(),
+
+            'categories' => Category::orderBy('name')->get(),
         ]);
     }
     
@@ -30,10 +35,33 @@ class CashierController extends Controller
         $validated = $request->validate([
             'cart' => 'required|array|min:1',
             'total' => 'required|numeric|min:0',
-            'paid' => 'required|numeric|gte:total',
+
+            'payment_method' => [
+                'required',
+                'in:' . implode(',', PaymentMethod::values()),
+            ],
+
+            'paid' => 'nullable|numeric',
         ]);
 
         try {
+
+            if ($validated['payment_method'] === 'cash') {
+
+                if ($validated['paid'] < $validated['total']) {
+
+                    return back()->with(
+                        'error',
+                        'Uang yang dibayarkan kurang.'
+                    );
+
+                }
+
+            } else {
+
+                $validated['paid'] = $validated['total'];
+
+            }
 
             DB::transaction(function () use ($validated) {
 
@@ -43,6 +71,7 @@ class CashierController extends Controller
                     'total' => $validated['total'],
                     'paid' => $validated['paid'],
                     'change' => $validated['paid'] - $validated['total'],
+                    'payment_method' => $validated['payment_method'],
                 ]);
 
                 foreach ($validated['cart'] as $item) {

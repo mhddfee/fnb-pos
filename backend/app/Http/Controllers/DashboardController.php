@@ -14,11 +14,31 @@ class DashboardController extends Controller
     {
         $today = now()->toDateString();
 
-        $todayRevenue = \App\Models\Transaction::whereDate('created_at', $today)
+        $todayRevenue = Transaction::whereDate('created_at', $today)
             ->sum('total');
 
-        $todayTransactions = \App\Models\Transaction::whereDate('created_at', $today)
+        $todayTransactions = Transaction::whereDate('created_at', $today)
             ->count();
+        
+        $thisWeekRevenue = Transaction::whereBetween('created_at', [
+            now()->startOfWeek(),
+            now()->endOfWeek(),
+        ])->sum('total');
+
+        $lastWeekRevenue = Transaction::whereBetween('created_at', [
+            now()->subWeek()->startOfWeek(),
+            now()->subWeek()->endOfWeek(),
+        ])->sum('total');
+
+        $growth = 0;
+
+        if ($lastWeekRevenue > 0) {
+            $growth = (($thisWeekRevenue - $lastWeekRevenue) / $lastWeekRevenue) * 100;
+        }
+
+        if ($lastWeekRevenue == 0 && $thisWeekRevenue > 0) {
+            $growth = 100;
+        }
 
         $lowStockProducts = Product::where('stock', '<=', 5)
             ->where('is_active', true)
@@ -40,21 +60,31 @@ class DashboardController extends Controller
 
         }
 
+        $recentTransactions = Transaction::with('user')
+            ->latest()
+            ->take(5)
+            ->get();
+
         return Inertia::render('Dashboard', [
             'stats' => [
                 'categories' => Category::count(),
                 'products' => Product::count(),
                 'activeProducts' => Product::where('is_active', true)->count(),
                 'inactiveProducts' => Product::where('is_active', false)->count(),
-
+                
                 'todayRevenue' => $todayRevenue,
                 'todayTransactions' => $todayTransactions,
+                'thisWeekRevenue' => $thisWeekRevenue,
+                'lastWeekRevenue' => $lastWeekRevenue,
+                'growth' => round($growth, 1),
                 'lowStockCount' => $lowStockProducts->count(),
             ],
 
             'lowStockProducts' => $lowStockProducts,
 
             'salesChart' => $salesChart,
+
+            'recentTransactions' => $recentTransactions,
         ]);
     }
 }

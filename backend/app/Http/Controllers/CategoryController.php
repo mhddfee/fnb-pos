@@ -19,10 +19,28 @@ class CategoryController extends Controller
         ->paginate(10)
         ->withQueryString();
 
+        $totalCategories = Category::count();
+
+        $activeCategories = Category::where(
+            'is_active',
+            true
+        )->count();
+
+        $inactiveCategories = Category::where(
+            'is_active',
+            false
+        )->count();
+
         return Inertia::render('Categories/Index', [
             'categories' => $categories,
             'filters' => [
                 'search' => $search,
+            ],
+
+            'stats' => [
+                'total' => $totalCategories,
+                'active' => $activeCategories,
+                'inactive' => $inactiveCategories,
             ],
         ]);
     }
